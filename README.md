@@ -53,3 +53,60 @@ app.UseSwaggerUI(opt =><br />
 });
 
 Now all should go as expected, run application with ctrl+F5 or F5 and hit URL baseurl/swagger (https://localhost:44313/swagger for my demo application). 
+
+In all above document it's minimum and siplest way to enable openAPI/swagger to web api. We can also extend this documentation to more information like api description, contact details and licence info etc. To extend we documentation we need provide all these details to services.AddSwaggerGen method under Startup.ConfigureServices as 
+
+services.AddSwaggerGen(conf =><br />
+{
+conf.SwaggerDoc("v1", new OpenApiInfo<br />
+{<br />
+Title = "Api documentation",<br />
+Version = "1.0.0",<br />
+Description = "Demo api for ducumentation",<br />
+License = new OpenApiLicense<br />
+{<br />
+Name = "Licence name",<br />
+Url = new Uri("https://licence_Terms_URL.com")<br />
+},<br />
+Contact = new OpenApiContact<br />
+{<br />
+Name = "Surender Tanwar",<br />
+Email = "tanwar.mydream3010@gmail.com",<br />
+Url = new Uri("https://github.com/Surender1987")<br />
+}<br />
+});<br />
+});<br />
+
+Addition to above we can also use XML comments for dumenation through swagger. It will automativally produce document from XML comment. To include xml comments for documentation we have to enable xml documentation file in project 
+
+Right click to solution ---> Properties ---> Select buld tab in left ---> Under output section select checkbox forr xml documentation file ---> Save with ctrl + s
+
+Next, add following code to services.AddSwaggerGen under startup.configureservices method 
+
+ // Set the comments path for the Swagger JSON and UI.<br />
+var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";<br />
+var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);<br />
+conf.IncludeXmlComments(xmlPath);<br />
+                
+Add xml comments to controller actions as example given below
+
+/// <summary><br />
+/// Creates a TodoItem.<br />
+/// </summary><br />
+/// <remarks><br />
+/// Sample request:<br />
+///<br />
+/// POST /Todo<br />
+/// {<br />
+/// "id": 1,<br />
+/// "name": "Item1",<br />
+/// "isComplete": true<br />
+/// }<br />
+///<br />
+/// </remarks><br />
+/// <param name="item"></param><br />
+/// <returns>A newly created TodoItem</returns><br />
+/// <response code="201">Returns the newly created item</response><br />
+/// <response code="400">If the item is null</response><br />
+
+These all comments will be added to swagger UI
