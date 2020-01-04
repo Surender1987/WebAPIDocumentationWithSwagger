@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,10 +30,28 @@ namespace WebAPIDocumentationWithSwagger
         {
             services.AddSwaggerGen(conf =>
             {
-                conf.SwaggerDoc("v1", new OpenApiInfo {
-                    Title="Api documentation",
-                    Version = "1.0.0"
+                conf.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Api documentation",
+                    Version = "1.0.0",
+                    Description = "Demo api for ducumentation",
+                    License = new OpenApiLicense
+                    {
+                        Name = "Licence name",
+                        Url = new Uri("https://licence_Terms_URL.com")
+                    },
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Surender Tanwar",
+                        Email = "tanwar.mydream3010@gmail.com",
+                        Url = new Uri("https://github.com/Surender1987")
+                    }
                 });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                conf.IncludeXmlComments(xmlPath);
             });
             services.AddControllers();
         }
