@@ -25,4 +25,31 @@ Swashbuckle.AspNetCore mainly consists of three components
 For implementation, i am using visual studio 2019 with .Net core 3.1. Here are steps 
 
 1. Open visual studio 2019 and create a new project with template ASP.Net core web application and select web api type project
-2. 
+2. Install nuget pckage "Swashbuckle.AspNetCore" for now its pre-release so i am using version 5.0.0-rc5.
+   Open Solution Explorer --> Right click to dependencies folder --> select manage nuget package option --> Search for Swashbuckle.AspNetCore --> Install
+3. Next step is to modify our startup class to add swagger dependencies and middlewares
+
+Import following namespace
+
+using Microsoft.OpenApi.Models;
+
+Add swagger generator to the services collection by adding below code to Startup.ConfigureServices method
+
+services.AddSwaggerGen(conf =><br />
+{<br />
+  conf.SwaggerDoc("v1", new OpenApiInfo {<br />
+      Title="Api documentation",<br />
+      Version = "1.0.0"<br />
+  });<br />
+});
+
+Next enable middleware’s for serving generated swagger json and swagger ui by adding below code to startup.configure method
+
+app.UseSwagger();
+
+app.UseSwaggerUI(opt =><br />
+{<br />
+  opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Web api documentation");<br />  
+});
+
+Now all should go as expected, run application with ctrl+F5 or F5 and hit URL baseurl/swagger (https://localhost:44313/swagger for my demo application). 
