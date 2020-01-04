@@ -1,2 +1,2 @@
-# WebAPIDocumentationWithSwagger
-ASP.Net core web api with swagger
+# ASP.net core web api documentation with swagger/openApi
+In the world of web api and microservices, understanding web api's methods and endpoints is quite challenging. Traditional way to create documentaion as file with word or PDF. But it is very difficult to maintaine and keeping documentaion updated as per changes. Now swagger which also know as openAPI solves the problem of web api documetaion 
